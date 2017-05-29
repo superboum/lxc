@@ -850,6 +850,12 @@ static int do_start(void *data)
 		INFO("Unshared CLONE_NEWCGROUP.");
 	}
 
+	/* Finish container's setup (keep/drop capabilities) */
+	if (lxc_late_setup(handler)) {
+		ERROR("Failed to setup container \"%s\".", handler->name);
+		goto out_warn_father;
+	}
+
 	/* Set the label to change to when we exec(2) the container's init. */
 	if (lsm_process_label_set(NULL, handler->conf, 1, 1) < 0)
 		goto out_warn_father;

@@ -4227,6 +4227,16 @@ int lxc_setup(struct lxc_handler *handler)
 		return -1;
 	}
 
+	NOTICE("'%s' is setup.", name);
+
+	return 0;
+}
+
+int lxc_late_setup(struct lxc_handler *handler)	{
+	const char *name = handler->name;
+	struct lxc_conf *lxc_conf = handler->conf;
+	const char *lxcpath = handler->lxcpath;
+
 	if (run_lxc_hooks(name, "priv-start", lxc_conf, lxcpath, NULL)) {
 		ERROR("failed to run privileged-start hooks for container '%s'.", name);
 		return -1;
@@ -4246,7 +4256,7 @@ int lxc_setup(struct lxc_handler *handler)
 		return -1;
 	}
 
-	NOTICE("'%s' is setup.", name);
+	NOTICE("'%s' late setup is done.", name);
 
 	return 0;
 }
